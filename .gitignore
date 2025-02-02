@@ -1,1 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.db
+*.sqlite3
+venv/
+.env
+*.log
+.DS_Store
 
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+.history/
+
+# Node.js (Frontend)
+node_modules/
+dist/
+build/
+*.lock
+
+# Git
+*.bak
+*.swp
