@@ -38,16 +38,19 @@ investment_portfolio_optimization/
 │   ├── tests/                  # Юнит-тесты
 │   └── requirements.txt        # Зависимости Python
 ├── frontend/                   # Клиентская часть (React)
+│   ├── public/                   # Публичные файлы
 │   ├── src/
 │   │   ├── components/         # UI-компоненты
 │   │   ├── pages/              # Страницы приложения
+│   │   ├── api/                # Работа с API
+│   │   ├── utils/              # Утилитарные функции
 │   │   ├── App.jsx             # Главный компонент
 │   │   ├── index.js            # Точка входа
 │   ├── package.json            # Зависимости React
 ├── data/                       # Данные для анализа
 ├── docs/                       # Документация проекта
-├── .gitignore                  # Игнорируемые файлы
-├── README.md                   # Вы здесь
+│   ├── README.md               # Вы здесь
+├── .gitignore                  # Игнорируемые файлы                
 └── LICENSE                     # Лицензия проекта
 ```
 
