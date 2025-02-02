@@ -11,6 +11,7 @@ venv/
 .env
 *.log
 .DS_Store
+txt.txt
 
 # Jupyter Notebook
 .ipynb_checkpoints/
@@ -28,3 +29,10 @@ build/
 # Git
 *.bak
 *.swp
+
+# данные из ML
+data/raw/
+data/processed/
+*.csv
+*.parquet
+*.json
