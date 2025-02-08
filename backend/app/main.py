@@ -1,15 +1,35 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
+import uvicorn
+from backend.app.routers import data
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 👈 Можно указать конкретный домен
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(data.router)
 
 # Данные о торговых активах (имитация без БД)
+# aapl = data.get_stock_price("AAPL")["price"]
+# tsla = data.get_stock_price("TSLA")["price"]
+# BTC = data.get_stock_price("BTC")["price"]
+
+aapl, tsla, BTC = 0, 0, 0
+
 assets = {
-    "AAPL": {"symbol": "AAPL", "name": "Apple Inc.", "price": 175.23, "change": -1.25},
-    "TSLA": {"symbol": "TSLA", "name": "Tesla Inc.", "price": 850.45, "change": 3.67},
-    "BTC": {"symbol": "BTC", "name": "Bitcoin", "price": 37890.12, "change": 250.75}
+    "AAPL": {"symbol": "AAPL", "name": "Apple Inc.", "price": aapl, "change": -1.25},
+    "TSLA": {"symbol": "TSLA", "name": "Tesla Inc.", "price": tsla, "change": 3.67},
+    "BTC": {"symbol": "BTC", "name": "Bitcoin", "price": BTC, "change": 250.75}
 }
+
 
 # Модель для ответа с активами
 class Asset(BaseModel):
@@ -41,7 +61,7 @@ def get_market_news():
         ]
     }
 
+
 # Запуск сервера (если файл запускается напрямую)
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", reload=True)
