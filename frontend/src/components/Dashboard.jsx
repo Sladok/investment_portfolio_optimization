@@ -8,6 +8,10 @@ const Dashboard = () => {
     const [history, setHistory] = useState([]);
     const [error, setError] = useState("");
 
+    // Переменная для цвета темы
+    const themeColor = "#5f1d8f"; // Темно-фиолетовый
+    // 147659  Зеленый
+    // 5f1d8f  Фиолетовый
     const fetchStockData = async () => {
         setError("");
         setStock(null);
@@ -22,15 +26,14 @@ const Dashboard = () => {
             const stockResponse = await axios.get(`http://127.0.0.1:8000/stock/${symbol.toUpperCase()}`);
             setStock({
                 ...stockResponse.data,
-                price: parseFloat(stockResponse.data.price).toFixed(2) // Округляем цену
+                price: parseFloat(stockResponse.data.price).toFixed(2)
             });
 
             const historyResponse = await axios.get(`http://127.0.0.1:8000/stock/${symbol.toUpperCase()}/history?period=1y`);
 
-            
             const formattedData = Object.entries(historyResponse.data.history).map(([date, price]) => ({
-                date: date.substring(0, 10), // Оставляем только YYYY-MM-DD
-                price: parseFloat(price).toFixed(2) // Округляем цену
+                date: date.substring(0, 10), // YYYY-MM-DD
+                price: parseFloat(price).toFixed(2)
             }));
 
             if (formattedData.length === 0) {
@@ -46,7 +49,7 @@ const Dashboard = () => {
 
     return (
         <div style={{ textAlign: "center", color: "#ffffff" }}>
-            <h2 style={{ fontSize: "24px", marginBottom: "10px" }}>📈 Поиск акций</h2>
+            <h2 style={{ fontSize: "24px", marginBottom: "10px" }}>Поиск акций</h2>
             
             <input 
                 type="text" 
@@ -66,7 +69,7 @@ const Dashboard = () => {
                 style={{
                     padding: "8px 15px",
                     fontSize: "16px",
-                    backgroundColor: "#4CAF50",
+                    backgroundColor: themeColor, // Используем переменную
                     color: "white",
                     border: "none",
                     borderRadius: "5px",
@@ -91,12 +94,12 @@ const Dashboard = () => {
                             <ResponsiveContainer width="100%" height="100%">
                                 <LineChart width={800} height={600} data={history}>
                                     <XAxis
-                                      dataKey="date"
-                                      tickFormatter={(tick) => {
-                                          const date = new Date(tick);
-                                          return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-                                      }}
-                                  />
+                                        dataKey="date"
+                                        tickFormatter={(tick) => {
+                                            const date = new Date(tick);
+                                            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+                                        }}
+                                    />
 
                                     <YAxis 
                                         tick={{ fill: "#ffffff" }} 
@@ -110,9 +113,9 @@ const Dashboard = () => {
                                     <Line 
                                         type="monotone" 
                                         dataKey="price" 
-                                        stroke="#00FF99" 
+                                        stroke={themeColor} // Используем переменную
                                         strokeWidth={2} 
-                                        dot={{ r: 1, fill: "#00FF99" }}
+                                        dot={{ r: 1, fill: themeColor }} // Используем переменную
                                     />
                                 </LineChart>
                             </ResponsiveContainer>

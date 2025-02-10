@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 👈 Можно указать конкретный домен
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -31,7 +31,6 @@ assets = {
 }
 
 
-# Модель для ответа с активами
 class Asset(BaseModel):
     symbol: str
     name: str
@@ -62,6 +61,5 @@ def get_market_news():
     }
 
 
-# Запуск сервера (если файл запускается напрямую)
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
