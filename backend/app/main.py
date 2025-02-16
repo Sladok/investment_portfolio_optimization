@@ -2,9 +2,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 import uvicorn
-from backend.app.routers import data
+from backend.app.routers import data, ws_stock
 from fastapi.middleware.cors import CORSMiddleware
-
+from backend.app.routers import auth
 
 app = FastAPI()
 app.add_middleware(
@@ -16,6 +16,8 @@ app.add_middleware(
 )
 
 app.include_router(data.router)
+app.include_router(ws_stock.router)
+app.include_router(auth.router)
 
 # Данные о торговых активах (имитация без БД)
 # aapl = data.get_stock_price("AAPL")["price"]
@@ -59,6 +61,12 @@ def get_market_news():
             {"title": "Биткоин пробил уровень $38,000", "source": "CoinDesk"},
         ]
     }
+
+
+@app.get("/")
+def root():
+    return {"message": "Welcome to Investment Portfolio Optimization API"}
+
 
 
 if __name__ == "__main__":

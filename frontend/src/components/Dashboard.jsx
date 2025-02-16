@@ -29,7 +29,7 @@ const Dashboard = () => {
                 price: parseFloat(stockResponse.data.price).toFixed(2)
             });
 
-            const historyResponse = await axios.get(`http://127.0.0.1:8000/stock/${symbol.toUpperCase()}/history?period=1y`);
+            const historyResponse = await axios.get(`http://127.0.0.1:8000/stock/${symbol.toUpperCase()}/history?period=3y`);
 
             const formattedData = Object.entries(historyResponse.data.history).map(([date, price]) => ({
                 date: date.substring(0, 10), // YYYY-MM-DD
