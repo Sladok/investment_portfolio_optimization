@@ -18,6 +18,7 @@ const RegisterPage = () => {
         password,
       });
       localStorage.setItem("token", response.data.access_token);
+      localStorage.setItem("email", email);
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.detail || "Ошибка регистрации");

@@ -5,20 +5,21 @@ import HomePage from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
-
+import AccountPage from "./pages/AccountPage";
 function App() {
   const token = localStorage.getItem("token");
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/account" element={<AccountPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route
+        {/* <Route
           path="/dashboard"
           element={token ? <DashboardPage /> : <Navigate to="/login" replace />}
-        />
+        /> */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
