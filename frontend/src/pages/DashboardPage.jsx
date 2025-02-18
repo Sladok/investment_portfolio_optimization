@@ -15,7 +15,7 @@ const DashboardPage = () => {
         <main style={{ flex: 1, padding: "20px", boxSizing: "border-box", textAlign: "center" }}>
           {/* <RealTimeStockChart symbol="AAPL" />
            */}
-           <Dashboard symbol="AAPL" />
+           <Dashboard defaultSymbol="AAPL" />
         </main>
       </div>
       <Footer />

@@ -22,7 +22,7 @@ const AccountPage = () => {
         <p><strong>Mail:</strong> {user.name}</p>
       </div>
       <button onClick={handleLogout} style={styles.logoutButton}>
-        Выйти
+        Выйти из аккаунта
       </button>
     </div>
   );

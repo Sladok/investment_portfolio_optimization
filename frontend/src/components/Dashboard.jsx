@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
-const Dashboard = () => {
-    const [symbol, setSymbol] = useState("");
+const Dashboard = ({defaultSymbol = "AAPL"}) => {
+    const [symbol, setSymbol] = useState(defaultSymbol);
     const [stock, setStock] = useState(null);
     const [history, setHistory] = useState([]);
     const [error, setError] = useState("");
@@ -47,6 +47,16 @@ const Dashboard = () => {
         }
     };
 
+    useEffect(() => {
+        fetchStockData();
+    }, []);
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            fetchStockData();
+        }
+    };
+
     return (
         <div style={{ textAlign: "center", color: "#ffffff" }}>
             <h2 style={{ fontSize: "24px", marginBottom: "10px" }}>Поиск акций</h2>
@@ -55,6 +65,7 @@ const Dashboard = () => {
                 type="text" 
                 value={symbol} 
                 onChange={(e) => setSymbol(e.target.value)}
+                onKeyDown={handleKeyDown} // Enter 
                 placeholder="Введите тикер (например, AAPL)"
                 style={{
                     padding: "8px",
