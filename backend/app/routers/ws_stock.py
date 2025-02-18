@@ -3,7 +3,8 @@ import json
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, HTTPException
 from polygon import RESTClient
 
-API_KEY = "p48swIcpTMhDi4LE6dRlRQf_xpj65mjk"
+API_KEY = "NONO"
+
 
 router = APIRouter()
 
