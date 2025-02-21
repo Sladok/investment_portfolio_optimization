@@ -15,7 +15,7 @@ client.query('''
 ''')
 
 
-# client.query(f"ALTER TABLE users DELETE WHERE email = 'Sladokgg@bk.ru'")
+# client.query(f"ALTER TABLE users DELETE WHERE email = 'alexander.130@bk.ru'")
 
 def get_user_by_email(email: str):
     """Получить хешированный пароль пользователя по email"""

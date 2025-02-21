@@ -13,8 +13,7 @@ const DashboardPage = () => {
         {/* Если используете Sidebar, он будет слева */}
         <Sidebar />
         <main style={{ flex: 1, padding: "20px", boxSizing: "border-box", textAlign: "center" }}>
-          {/* <RealTimeStockChart symbol="AAPL" />
-           */}
+          {/* <RealTimeStockChart symbol="AAPL" /> */}
            <Dashboard defaultSymbol="AAPL" />
         </main>
       </div>
