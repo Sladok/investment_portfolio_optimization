@@ -9,7 +9,7 @@ load_dotenv()
 router = APIRouter()
 tvdatafeed_login, tvdatafeed_pass = os.getenv("tvdatafeed_login"), os.getenv("tvdatafeed_password") 
 
-FROM_DATE = "2024-10-21"
+FROM_DATE = "2024-02-21"
 TO_DATE = "2025-02-21"
 INTERVALS = {"in_1_minute": Interval.in_1_minute,
             "in_3_minute": Interval.in_3_minute,
