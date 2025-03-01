@@ -2,11 +2,9 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 
-# Настройка хэширования паролей
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Секретный ключ и алгоритм
-SECRET_KEY = "ABOBA"  # замените на свой секрет
+SECRET_KEY = "SLADOK" 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

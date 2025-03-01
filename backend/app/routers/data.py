@@ -9,7 +9,7 @@ load_dotenv()
 router = APIRouter()
 tvdatafeed_login, tvdatafeed_pass = os.getenv("tvdatafeed_login"), os.getenv("tvdatafeed_password") 
 
-FROM_DATE = "2024-02-21"
+FROM_DATE = "2024-10-21"
 TO_DATE = "2025-02-21"
 INTERVALS = {"in_1_minute": Interval.in_1_minute,
             "in_3_minute": Interval.in_3_minute,
@@ -27,7 +27,6 @@ INTERVALS = {"in_1_minute": Interval.in_1_minute,
 
 INTERV = "in_daily"
 
-# Создаем объект tvDatafeed (без логина, но можно добавить учетку)
 tv = TvDatafeedLive(tvdatafeed_login, tvdatafeed_pass)
 
 @alru_cache(ttl=60)  # Кешируем на 60 секунд
@@ -70,7 +69,7 @@ async def fetch_stock_history(symbol: str, exchange: str = "NASDAQ", interval: s
 @router.get("/stock/{symbol}/history")
 async def get_stock_history(symbol: str, exchange: str = "NASDAQ", interval: str = "in_daily", from_date: str = "2025-02-01", to_date: str = "2025-02-20"):
     """Получает исторические данные акции"""
-    return await fetch_stock_history(symbol, exchange, interval=INTERV, from_date=FROM_DATE, to_date=TO_DATE)
+    return await fetch_stock_history(symbol, exchange, interval=interval, from_date=from_date, to_date=to_date)
 
 
 
