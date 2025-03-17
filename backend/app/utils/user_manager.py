@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 from backend.app.utils.database import ClickHouseDB
 from backend.app.utils.auth_manager import AuthManager
 
+
 class UserManager:
     def __init__(self):
         self.db = ClickHouseDB()

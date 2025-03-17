@@ -67,221 +67,32 @@ async def fetch_stock_history(symbol: str, exchange: str = "NASDAQ", interval: s
         raise HTTPException(status_code=500, detail="Ошибка получения данных")
 
 @router.get("/stock/{symbol}/history")
-async def get_stock_history(symbol: str, exchange: str = "NASDAQ", interval: str = "in_daily", from_date: str = "2025-02-01", to_date: str = "2025-02-20"):
+async def get_stock_history(symbol: str, exchange: str = "NASDAQ", interval: str = "in_daily", from_date: str = "2022-02-01", to_date: str = "2025-03-10"):
     """Получает исторические данные акции"""
     return await fetch_stock_history(symbol, exchange, interval=interval, from_date=from_date, to_date=to_date)
 
 
+@router.get("/stock/{symbol}/candlestick")
+async def get_stock_candlestick(symbol: str, exchange: str = "NASDAQ", interval: str = "in_daily", n_bars: int = 100):
+    """Получает исторические свечи акции"""
+    try:
+        data = tv.get_hist(symbol=symbol, exchange=exchange, interval=INTERVALS[interval], n_bars=n_bars)
+        if data is None or data.empty:
+            raise HTTPException(status_code=404, detail="Нет данных по акции")
 
+        candles = [
+            {
+                "datetime": str(index),
+                "open": round(row["open"], 2),
+                "high": round(row["high"], 2),
+                "low": round(row["low"], 2),
+                "close": round(row["close"], 2),
+                "volume": int(row["volume"])
+            }
+            for index, row in data.iterrows()
+        ]
 
-
-# client = RESTClient(POLYGON_API_KEY)
-
-
-# # @alru_cache(ttl=60)  # Кешируем на 60 секунд
-# async def fetch_stock_data(symbol: str):
-#     """Асинхронное получение данных об акции (использует EOD)"""
-#     try:
-#         response = client.get_daily_open_close_agg(symbol, "2025-02-20")
-#     except Exception as ex:
-#         print(ex)
-#         raise HTTPException(status_code=404, detail="Акция не найдена")
-    
-#     if not response or not response.results:
-#         raise HTTPException(status_code=404, detail="Нет данных по акции")
-    
-#     last_price = response.results[0]["c"]  # Цена закрытия
-#     return {
-#         "symbol": symbol.upper(),
-#         "price": round(last_price, 2)
-#     }
-
-
-# @router.get("/stock/{symbol}")
-# async def get_stock_price(symbol: str):
-#     """Возвращает актуальную цену акции по тикеру"""
-#     return await fetch_stock_data(symbol)
-
-# # @alru_cache(ttl=300)  # Кешируем исторические данные на 5 минут
-# async def fetch_stock_history(symbol: str, from_date: str = "2025-02-01", to_date: str = "2025-02-20"):
-#     """Получение исторических данных акции (использует EOD)"""
-#     try:
-#         history = {}
-#         current_date = from_date
-        
-#         while current_date <= to_date:
-#             response = client.get_daily_open_close(symbol, current_date)
-#             if response and response.close:
-#                 history[current_date] = round(response.close, 2)
-#             current_date = str(pd.to_datetime(current_date) + pd.Timedelta(days=1))[:10]
-        
-#     except Exception as ex:
-#         print(ex)
-#         raise HTTPException(status_code=404, detail="Нет данных по акции")
-    
-#     return {
-#         "symbol": symbol.upper(),
-#         "history": history
-#     }
-
-
-# @router.get("/stock/{symbol}/history")
-# async def get_stock_history(symbol: str, timespan: str = "day", from_date: str = "2025-02-01", to_date: str = "2025-02-20"):
-#     """Получает исторические данные акции"""
-#     return await fetch_stock_history(symbol, timespan, from_date, to_date)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # @alru_cache(ttl=60)  # Кешируем на 60 секунд
-# async def fetch_stock_data(symbol: str):
-#     """Асинхронное получение данных об акции"""
-#     try:
-#         response = client.get_last_trade(symbol)
-#     except Exception as ex:
-#         print(ex)
-#         raise HTTPException(status_code=404, detail="Акция не найдена")
-    
-#     return {
-#         "symbol": symbol.upper(),
-#         "price": round(response.price, 2)
-#     }
-
-# @router.get("/stock/{symbol}")
-# async def get_stock_price(symbol: str):
-#     """Возвращает актуальную цену акции по тикеру"""
-#     return await fetch_stock_data(symbol)
-
-# # @alru_cache(ttl=300)  # Кешируем исторические данные на 5 минут
-# async def fetch_stock_history(symbol: str, timespan: str = "day", from_date: str = "2025-02-01", to_date: str = "2025-02-20"):
-#     """Асинхронное получение исторических данных акции"""
-#     try:
-#         response = client.get_aggs(symbol, 1, timespan, from_date, to_date)
-#     except Exception:
-#         raise HTTPException(status_code=404, detail="Нет данных по акции")
-    
-#     if not response or not response.results:
-#         raise HTTPException(status_code=404, detail="Нет данных по акции")
-    
-#     history = {item["t"]: item["c"] for item in response.results}
-    
-#     return {
-#         "symbol": symbol.upper(),
-#         "history": history
-#     }
-
-# @router.get("/stock/{symbol}/history")
-# async def get_stock_history(symbol: str, timespan: str = "day", from_date: str = "2025-02-01", to_date: str = "2025-02-20"):
-#     """Получает исторические данные акции"""
-#     return await fetch_stock_history(symbol, timespan, from_date, to_date)
-
-
-
-
-# from fastapi import APIRouter, HTTPException
-# import yfinance as yf
-# from async_lru import alru_cache
-
-# router = APIRouter()
-
-# @alru_cache(ttl=60)  # Кешируем на 60 секунд
-# async def fetch_stock_data(symbol: str):
-#     """Асинхронное получение данных об акции"""
-#     stock = yf.Ticker(symbol)
-#     data = stock.history(period="1d")
-
-#     if data.empty:
-#         raise HTTPException(status_code=404, detail="Акция не найдена")
-    
-#     return {
-#         "symbol": symbol.upper(),
-#         "price": round(data["Close"].iloc[-1], 2)
-#     }
-
-# @router.get("/stock/{symbol}")
-# async def get_stock_price(symbol: str):
-#     """Возвращает актуальную цену акции по тикеру"""
-#     return await fetch_stock_data(symbol)
-
-
-# @alru_cache(ttl=300)  # Кешируем исторические данные на 5 минут
-# async def fetch_stock_history(symbol: str, period: str):
-#     """Асинхронное получение исторических данных акции"""
-#     stock = yf.Ticker(symbol)
-#     history = stock.history(period=period)
-
-#     if history.empty:
-#         raise HTTPException(status_code=404, detail="Нет данных по акции")
-
-#     return {
-#         "symbol": symbol,
-#         "history": history["Close"].to_dict()
-#     }
-
-# @router.get("/stock/{symbol}/history")
-# async def get_stock_history(symbol: str, period: str = "1mo"):
-#     """Получает исторические данные акции"""
-#     return await fetch_stock_history(symbol, period)
-
-
-
-# from fastapi import APIRouter, HTTPException
-# import yfinance as yf
-# from datetime import datetime, timedelta
-
-# router = APIRouter()
-
-# @router.get("/stock/{symbol}")
-# async def get_stock_price(symbol: str):
-#     """Возвращает актуальную цену акции по тикеру"""
-#     stock = yf.Ticker(symbol)
-#     data = stock.history(period="1d")
-    
-#     if data.empty:
-#         raise HTTPException(status_code=404, detail="Акция не найдена")
-    
-#     return {
-#         "symbol": symbol.upper(),
-#         "price": round(data["Close"].iloc[-1], 2)
-#     }
-
-
-# @router.get("/stock/{symbol}/history")
-# async def get_stock_history(symbol: str, period: str = "1mo"):
-#     """
-#     Получает исторические данные акции.
-#     :param symbol: Тикер акции (например, AAPL)
-#     :param period: Период (1d, 5d, 1mo, 6mo, 1y, 5y, max)
-#     """
-#     try:
-#         stock = yf.Ticker(symbol)
-#         history = stock.history(period=period)
-
-#         if history.empty:
-#             raise HTTPException(status_code=404, detail="Нет данных по акции")
-
-#         return {
-#             "symbol": symbol,
-#             "history": history["Close"].to_dict()
-#         }
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
+        return {"symbol": symbol.upper(), "candles": candles}
+    except Exception as e:
+        print(f"Ошибка: {e}")
+        raise HTTPException(status_code=500, detail="Ошибка получения данных")

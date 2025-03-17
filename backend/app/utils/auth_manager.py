@@ -2,6 +2,7 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 
+
 class AuthManager:
     def __init__(self, secret_key="SLADOK", algorithm="HS256", expire_minutes=30):
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
