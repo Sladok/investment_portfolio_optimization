@@ -5,6 +5,8 @@ import uvicorn
 from backend.app.routers import data, ws_stock
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.routers import auth
+from backend.app.routers.admin_clickhouse import router as admin_router
+
 
 app = FastAPI()
 
@@ -19,7 +21,7 @@ app.add_middleware(
 app.include_router(data.router)
 app.include_router(ws_stock.router)
 app.include_router(auth.router)
-
+app.include_router(admin_router)
 @app.get("/")
 def root():
     return {"message": "Welcome to Investment Portfolio Optimization API"}

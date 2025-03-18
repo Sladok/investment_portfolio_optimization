@@ -20,7 +20,7 @@ const Dashboard = ({ defaultSymbol = "AAPL" }) => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/stock/${symbol.toUpperCase()}/candlestick?n_bars=1000`);
+            const response = await fetch(`http://localhost:8000/stock/${symbol.toUpperCase()}/candlestick?n_bars=10000`);
             const result = await response.json();
             
             if (result.candles) {

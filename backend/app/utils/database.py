@@ -1,8 +1,11 @@
 class ClickHouseDB:
     def __init__(self, host="localhost", port=8123):
         import clickhouse_connect
-        self.client = clickhouse_connect.get_client(host=host, port=port)
-        self._create_tables()
+        try:
+            self.client = clickhouse_connect.get_client(host=host, port=port)
+            self._create_tables()
+        except Exception as ex:
+            print(ex)
 
     def _create_tables(self):
         self.client.query('''
