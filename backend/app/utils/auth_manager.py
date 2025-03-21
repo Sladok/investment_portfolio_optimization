@@ -1,10 +1,17 @@
 from passlib.context import CryptContext
+from fastapi import Depends, HTTPException, Security
 from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+SECRET_KEY, ALGORITHM = os.getenv("SECRET_KEY"), os.getenv("ALGORITHM") 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 class AuthManager:
-    def __init__(self, secret_key="SLADOK", algorithm="HS256", expire_minutes=30):
+    def __init__(self, secret_key=SECRET_KEY, algorithm=ALGORITHM, expire_minutes=30):
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
         self.secret_key = secret_key
         self.algorithm = algorithm
@@ -28,3 +35,11 @@ class AuthManager:
         except JWTError:
             return None
     
+    def get_current_user(self, token: str = Security(oauth2_scheme)):
+        """Декодирует токен и возвращает email пользователя"""
+        payload = self.decode_access_token(token)
+        if not payload or "sub" not in payload:
+            raise HTTPException(
+                status_code=401, detail="Не удалось проверить учетные данные"
+            )
+        return payload["sub"]
