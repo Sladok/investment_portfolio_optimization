@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from backend.app.utils.database import ClickHouseDB
+import json
 
 router = APIRouter()
-
 db = ClickHouseDB()
 
 
@@ -21,12 +21,26 @@ def get_table_data(table_name: str):
         print(f"Получаем данные из таблицы: {table_name}")  # Отладка
         data = db.client.query(f"SELECT * FROM {table_name} LIMIT 100").result_rows
         print(f"Получено {len(data)} строк")  # Отладка
-        
+        print(data)
+
         columns = db.client.query(f"DESCRIBE TABLE {table_name}").result_rows
         column_names = [col[0] for col in columns]
         print(f"Колонки: {column_names}")  # Отладка
 
-        return {"table": table_name, "columns": column_names, "data": data}
+        # Преобразование данных (если есть массивы)
+        def process_value(value):
+            if isinstance(value, str):  # Если строка (ClickHouse может так хранить списки)
+                try:
+                    return json.loads(value)  # Пробуем преобразовать в список
+                except json.JSONDecodeError:
+                    return value  # Оставляем как есть, если не получилось
+            return value
+
+        processed_data = [
+            [process_value(value) for value in row] for row in data
+        ]
+
+        return {"table": table_name, "columns": column_names, "data": processed_data}
     except Exception as e:
         print(f"Ошибка: {e}")  # Отладка
         return {"error": str(e)}

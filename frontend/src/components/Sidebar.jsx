@@ -21,7 +21,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li style={{ marginBottom: "10px" }}>
-            <Link to="/portfolio" style={{ textDecoration: "none", color: "#fff" }}>
+            <Link to="/portfolios" style={{ textDecoration: "none", color: "#fff" }}>
               Portfolio
             </Link>
           </li>

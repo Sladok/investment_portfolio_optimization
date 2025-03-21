@@ -77,31 +77,45 @@ class ClickHouseDB:
     def get_portfolios(self, user_email: str):
         """Получает список всех портфелей пользователя"""
         self._ensure_connection()
-        query = "SELECT name, stocks FROM portfolios WHERE user_email = %(user_email)s"
+        query = "SELECT id, name, stocks, user_email FROM portfolios WHERE user_email = %(user_email)s"
         result = self.client.query(query, {"user_email": user_email}).result_rows
-        return [{"name": row[0], "stocks": row[1]} for row in result]
+        return [{"id": str(row[0]), "name": row[1], "stocks": row[2], "user_email": row[3]} for row in result]
 
-    def update_portfolio(self, user_email: str, portfolio_id: str, new_name: str = None, new_stocks: List[str] = None):
-        """Обновляет портфель пользователя"""
+
+
+    def update_portfolio(self, user_email: str, portfolio_id: str, name: str | None, stocks: List[str] | None):
+        self._ensure_connection()
+        
+        query = "SELECT count() FROM portfolios WHERE id = %(id)s AND user_email = %(user_email)s"
+        existing = self.client.query(query, {"id": portfolio_id, "user_email": user_email}).result_rows[0][0]
+        if existing == 0:
+            raise Exception("Портфель не найден или не принадлежит пользователю")
+    
+        updates = []
+        params = {"id": portfolio_id, "user_email": user_email}
+    
+        if name:
+            updates.append("name = %(name)s")
+            params["name"] = name
+        if stocks:
+            updates.append("stocks = %(stocks)s")
+            params["stocks"] = ",".join(stocks)
+    
+        if updates:
+            update_query = f"ALTER TABLE portfolios UPDATE {', '.join(updates)} WHERE id = %(id)s AND user_email = %(user_email)s"
+            self.client.command(update_query, params)
+
+    def delete_portfolio(self, user_email: str, portfolio_id: str):
         self._ensure_connection()
 
-        if not new_name and not new_stocks:
-            raise ValueError("Нужно указать хотя бы одно изменение (имя или акции).")
+        query = "SELECT count() FROM portfolios WHERE id = %(id)s AND user_email = %(user_email)s"
+        existing = self.client.query(query, {"id": portfolio_id, "user_email": user_email}).result_rows[0][0]
+        if existing == 0:
+            raise Exception("Портфель не найден или не принадлежит пользователю")
 
-        query_parts = []
-        params = {"email": user_email, "id": portfolio_id}
+        delete_query = "ALTER TABLE portfolios DELETE WHERE id = %(id)s AND user_email = %(user_email)s"
+        self.client.command(delete_query, {"id": portfolio_id, "user_email": user_email})
 
-        if new_name:
-            query_parts.append("name = %(name)s")
-            params["name"] = new_name
-
-        if new_stocks:
-            query_parts.append("stocks = %(stocks)s")
-            params["stocks"] = ",".join(new_stocks)
-
-        query = f"ALTER TABLE portfolios UPDATE {', '.join(query_parts)} WHERE user_email = %(email)s AND id = %(id)s"
-
-        self.client.command(query, params)
 
     def get_user_by_email(self, email: str):
         self._ensure_connection()

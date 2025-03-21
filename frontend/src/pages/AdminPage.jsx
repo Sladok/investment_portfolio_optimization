@@ -55,7 +55,9 @@ function AdminPage() {
                   {tableData.data.map((row, i) => (
                     <tr key={i}>
                       {row.map((cell, j) => (
-                        <td key={j} className="border px-2 py-1">{cell}</td>
+                        <td key={j} className="border px-2 py-1">
+                          {Array.isArray(cell) ? cell.join(", ") : String(cell)}
+                        </td>
                       ))}
                     </tr>
                   ))}
