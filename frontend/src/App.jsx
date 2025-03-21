@@ -1,10 +1,9 @@
 // frontend/src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "./pages/Home";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import DashboardPage from "./pages/DashboardPage";
 import AccountPage from "./pages/AccountPage";
 import AdminPage from "./pages/AdminPage";
 import PortfolioList from "./pages/PortfolioList";
@@ -16,7 +15,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

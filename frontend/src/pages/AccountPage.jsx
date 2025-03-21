@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Header from "../components/Header"; // Подключаем Header
 
 const AccountPage = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const AccountPage = () => {
 
     try {
       await axios.delete("http://127.0.0.1:8000/auth/delete-account", {
-        data: { email: userEmail }
+        data: { email: userEmail },
       });
 
       localStorage.removeItem("token");
@@ -37,29 +38,37 @@ const AccountPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center mb-6">Мой аккаунт</h2>
+    <div className="min-h-screen bg-[#0F0F19] text-[#D1D5DB] flex flex-col">
+      {/* Header */}
+      <Header />
 
-        <div className="bg-gray-700 p-4 rounded-md mb-6">
-          <p className="text-lg">
-            <strong>Email:</strong> {userEmail || "Неизвестно"}
-          </p>
+      {/* Контейнер для центрирования */}
+      <div className="flex-grow flex items-center justify-center">
+        <div className="bg-[#1A1A2E] shadow-lg rounded-lg p-8 w-full max-w-md">
+          <h2 className="text-2xl font-semibold text-center mb-6 text-[#8B5CF6]">
+            Мой аккаунт
+          </h2>
+
+          <div className="bg-[#252540] p-4 rounded-md mb-6">
+            <p className="text-lg">
+              <strong>Email:</strong> {userEmail || "Неизвестно"}
+            </p>
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="w-full bg-[#6D28D9] hover:bg-[#581C87] hover:shadow-md hover:scale-105 text-white font-medium py-2 px-4 rounded-lg transition-transform duration-200 ease-in-out mb-3"
+          >
+            Выйти из аккаунта
+          </button>
+
+          <button
+            onClick={handleDeleteAccount}
+            className="w-full bg-[#B91C1C] hover:bg-[#991B1B] hover:shadow-md hover:scale-105 text-white font-medium py-2 px-4 rounded-lg transition-transform duration-200 ease-in-out"
+          >
+            Удалить аккаунт
+          </button>
         </div>
-
-        <button 
-          onClick={handleLogout} 
-          className="w-full bg-red-500 hover:bg-red-600 hover:shadow-md hover:scale-105 text-white font-medium py-2 px-4 rounded-lg transition-transform duration-200 ease-in-out mb-3"
-        >
-          Выйти из аккаунта
-        </button>
-
-        <button 
-          onClick={handleDeleteAccount} 
-          className="w-full bg-red-700 hover:bg-red-800 hover:shadow-md hover:scale-105 text-white font-medium py-2 px-4 rounded-lg transition-transform duration-200 ease-in-out"
-        >
-          Удалить аккаунт
-        </button>
       </div>
     </div>
   );
@@ -71,6 +80,7 @@ export default AccountPage;
 // import React from "react";
 // import { useNavigate } from "react-router-dom";
 // import axios from "axios";
+// import Header from "../components/Header"; // Подключаем Header
 
 // const AccountPage = () => {
 //   const navigate = useNavigate();
@@ -92,13 +102,10 @@ export default AccountPage;
 //     if (!confirmDelete) return;
 
 //     try {
-//       // Отправляем запрос на удаление аккаунта
-//       axios.delete("http://127.0.0.1:8000/auth/delete-account", {
-//         data: { email: userEmail }
-//       })
-      
+//       await axios.delete("http://127.0.0.1:8000/auth/delete-account", {
+//         data: { email: userEmail },
+//       });
 
-//       // Удаляем данные из localStorage и перенаправляем на регистрацию
 //       localStorage.removeItem("token");
 //       localStorage.removeItem("email");
 //       alert("Ваш аккаунт успешно удалён.");
@@ -110,62 +117,38 @@ export default AccountPage;
 //   };
 
 //   return (
-//     <div style={styles.container}>
-//       <h2>Мой аккаунт</h2>
-//       <div style={styles.infoBox}>
-//         <p><strong>Mail:</strong> {userEmail || "Неизвестно"}</p>
+//     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+//       {/* Header */}
+//       <Header />
+
+//       {/* Контейнер для центрирования */}
+//       <div className="flex-grow flex items-center justify-center">
+//         <div className="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-md">
+//           <h2 className="text-2xl font-semibold text-center mb-6">Мой аккаунт</h2>
+
+//           <div className="bg-gray-700 p-4 rounded-md mb-6">
+//             <p className="text-lg">
+//               <strong>Email:</strong> {userEmail || "Неизвестно"}
+//             </p>
+//           </div>
+
+//           <button
+//             onClick={handleLogout}
+//             className="w-full bg-red-500 hover:bg-red-600 hover:shadow-md hover:scale-105 text-white font-medium py-2 px-4 rounded-lg transition-transform duration-200 ease-in-out mb-3"
+//           >
+//             Выйти из аккаунта
+//           </button>
+
+//           <button
+//             onClick={handleDeleteAccount}
+//             className="w-full bg-red-700 hover:bg-red-800 hover:shadow-md hover:scale-105 text-white font-medium py-2 px-4 rounded-lg transition-transform duration-200 ease-in-out"
+//           >
+//             Удалить аккаунт
+//           </button>
+//         </div>
 //       </div>
-//       <button onClick={handleLogout} style={styles.logoutButton}>
-//         Выйти из аккаунта
-//       </button>
-//       <button onClick={handleDeleteAccount} style={styles.deleteButton}>
-//         Удалить аккаунт
-//       </button>
 //     </div>
 //   );
 // };
 
-// const styles = {
-//   container: {
-//     width: "400px",
-//     margin: "50px auto",
-//     padding: "20px",
-//     backgroundColor: "#222",
-//     color: "#fff",
-//     borderRadius: "10px",
-//     textAlign: "center",
-//     boxShadow: "0 0 10px rgba(255, 255, 255, 0.1)",
-//   },
-//   infoBox: {
-//     textAlign: "left",
-//     marginBottom: "20px",
-//   },
-//   logoutButton: {
-//     backgroundColor: "#ff4c4c",
-//     border: "none",
-//     color: "#fff",
-//     padding: "10px 15px",
-//     fontSize: "16px",
-//     borderRadius: "5px",
-//     cursor: "pointer",
-//     transition: "0.3s",
-//     marginRight: "10px",
-//     width: "100%", // Растягиваем кнопку на всю ширину
-//   },
-//   deleteButton: {
-//     backgroundColor: "#d9534f",
-//     border: "none",
-//     color: "#fff",
-//     padding: "10px 15px",
-//     fontSize: "16px",
-//     borderRadius: "5px",
-//     cursor: "pointer",
-//     transition: "0.3s",
-//     width: "100%", // Растягиваем кнопку на всю ширину
-//     display: "block", // Делаем блочным элементом
-//     marginTop: "15px", // Добавляем отступ сверху
-//   },
-// };
-
 // export default AccountPage;
-
