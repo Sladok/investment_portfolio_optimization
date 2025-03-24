@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Header from "../components/Header"; // Подключаем Header
+import { Helmet } from "react-helmet-async";
+import Header from "../components/Header";
 
 const AccountPage = () => {
   const navigate = useNavigate();
@@ -39,10 +40,13 @@ const AccountPage = () => {
 
   return (
     <div className="min-h-screen bg-[#0F0F19] text-[#D1D5DB] flex flex-col">
-      {/* Header */}
+      <Helmet>
+        <title>InvestNavigator - {userEmail || "Аккаунт"}</title>
+        <meta name="description" content={`Аккаунт пользователя ${userEmail || "неизвестный"}`} />
+      </Helmet>
+
       <Header />
 
-      {/* Контейнер для центрирования */}
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-[#1A1A2E] shadow-lg rounded-lg p-8 w-full max-w-md">
           <h2 className="text-2xl font-semibold text-center mb-6 text-[#8B5CF6]">

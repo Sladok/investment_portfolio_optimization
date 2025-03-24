@@ -1,15 +1,19 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
-
 import Dashboard from "../components/Dashboard";
 
 const HomePage = () => {
-  console.log("Sidebar загружен:", Sidebar);
-
   return (
     <div className="flex flex-col min-h-screen bg-[#121212] text-white">
+      
+      <Helmet>
+        <title>InvestNavigator - Главная</title>
+        <meta name="description" content="Добро пожаловать в InvestNavigator" />
+      </Helmet>
+
       <Header />
       <div className="flex flex-1">
         <Sidebar className="w-1/4 hidden md:block" />

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header"; // Подключаем Header
+import { Helmet } from "react-helmet-async";
 
 function AdminPage() {
   const [tables, setTables] = useState([]);
@@ -23,7 +24,12 @@ function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
-      {/* Header */}
+
+      <Helmet>
+        <title>InvestNavigator - Страница админа</title>
+        <meta name="description" content="Админ" />
+      </Helmet>
+
       <Header />
 
       <div className="flex-grow p-6">

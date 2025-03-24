@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createPortfolio } from "../api/portfolio";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"; // Подключаем Header
+import { Helmet } from "react-helmet-async";
 
 const CreatePortfolio = () => {
   const [name, setName] = useState("");
@@ -24,7 +25,12 @@ const CreatePortfolio = () => {
 
   return (
     <div className="min-h-screen bg-[#0F0F19] text-white flex flex-col">
-      {/* Header */}
+
+      <Helmet>
+        <title>InvestNavigator - Создание портфеля</title>
+        <meta name="description" content="Создание портфеля" />
+      </Helmet>
+
       <Header />
 
       {/* Контейнер для формы */}

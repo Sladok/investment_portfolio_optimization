@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import { Trash2, Edit3 } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const PortfolioList = () => {
   const [portfolios, setPortfolios] = useState([]);
@@ -34,6 +35,12 @@ const PortfolioList = () => {
 
   return (
     <div className="min-h-screen bg-[#0F0F19] text-white flex flex-col">
+      
+      <Helmet>
+        <title>InvestNavigator - Список портфелей</title>
+        <meta name="description" content="Портфели" />
+      </Helmet>
+
       <Header />
 
       <div className="max-w-5xl mx-auto p-6 mt-10">

@@ -27,13 +27,12 @@ def get_table_data(table_name: str):
         column_names = [col[0] for col in columns]
         print(f"Колонки: {column_names}")  # Отладка
 
-        # Преобразование данных (если есть массивы)
         def process_value(value):
-            if isinstance(value, str):  # Если строка (ClickHouse может так хранить списки)
+            if isinstance(value, str): 
                 try:
-                    return json.loads(value)  # Пробуем преобразовать в список
+                    return json.loads(value) 
                 except json.JSONDecodeError:
-                    return value  # Оставляем как есть, если не получилось
+                    return value
             return value
 
         processed_data = [

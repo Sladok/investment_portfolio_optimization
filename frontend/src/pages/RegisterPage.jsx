@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
+import { Helmet } from "react-helmet-async";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +29,12 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0F0F19] text-[#D1D5DB]">
+
+      <Helmet>
+        <title>InvestNavigator - Регистрация</title>
+        <meta name="description" content="Регистрация пользователя" />
+      </Helmet>
+
       <Header />
       <div className="flex-grow flex items-center justify-center">
         <motion.div

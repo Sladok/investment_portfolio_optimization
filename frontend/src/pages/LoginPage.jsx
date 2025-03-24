@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +29,11 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0F0F19] text-[#D1D5DB]">
+      <Helmet>
+        <title>InvestNavigator - Вход</title>
+        <meta name="description" content={`Вход в аккаунт`} />
+      </Helmet>
+      
       <Header />
 
       {/* Контейнер формы */}
