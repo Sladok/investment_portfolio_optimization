@@ -24,6 +24,7 @@ const UserPortfolioList = ({ portfolios, setPortfolios }) => {
     }
   };
 
+      
   // Загружаем данные при монтировании
   useEffect(() => {
     if (portfolios.length === 0) {
@@ -124,9 +125,6 @@ const UserPortfolioList = ({ portfolios, setPortfolios }) => {
 };
 
 export default UserPortfolioList;
-
-
-
 
 
 
