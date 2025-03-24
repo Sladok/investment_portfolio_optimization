@@ -28,6 +28,7 @@ const EditPortfolio = () => {
     const result = await updatePortfolio(id, updatedData);
     if (result) {
       navigate("/portfolios");
+
     }
   };
 

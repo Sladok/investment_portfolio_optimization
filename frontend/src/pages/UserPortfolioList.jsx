@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPortfolios, deletePortfolio } from "../api/portfolio";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import { Trash2, Edit3 } from "lucide-react";
@@ -10,30 +10,45 @@ const UserPortfolioList = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchPortfolios = async () => {
-      try {
-        const data = await getPortfolios();
-        if (Array.isArray(data)) {
-          setPortfolios(data);
-        } else {
-          throw new Error("Ответ API не является массивом");
-        }
-      } catch (err) {
-        setError(err.message);
+  const location = useLocation();
+  
+  // Функция загрузки данных с сервера
+  const fetchPortfolios = async () => {
+    try {
+      const data = await getPortfolios();
+      if (Array.isArray(data)) {
+        setPortfolios(data);
+      } else {
+        throw new Error("Ответ API не является массивом");
       }
-    };
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
+  // Загружаем данные при монтировании
+  useEffect(() => {
     fetchPortfolios();
   }, []);
+
+  // Повторно запрашиваем данные, если изменился location (например, после редактирования)
+  useEffect(() => {
+    if (location.pathname === "/portfolios") {
+      // Подождать 500 мс перед обновлением списка
+      const timeout = setTimeout(() => {
+        fetchPortfolios();
+      }, 500);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [location]);
+  
 
   const handleDelete = async (portfolioId) => {
     await deletePortfolio(portfolioId);
     setPortfolios(portfolios.filter((p) => p.id !== portfolioId));
   };
 
-  
   return (
     <div className="min-h-screen bg-[#0F0F19] text-white flex flex-col">
       
