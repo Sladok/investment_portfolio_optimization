@@ -73,37 +73,72 @@ class ClickHouseDB:
         query = "INSERT INTO portfolios (user_email, name, stocks) VALUES (%(user_email)s, %(name)s, %(stocks)s)"
         self.client.command(query, {"user_email": user_email, "name": name, "stocks": stocks})
 
-
-    def get_portfolios(self, user_email: str):
+    def get_user_portfolios(self, user_email: str):
         """Получает список всех портфелей пользователя"""
         self._ensure_connection()
         query = "SELECT id, name, stocks, user_email FROM portfolios WHERE user_email = %(user_email)s"
         result = self.client.query(query, {"user_email": user_email}).result_rows
         return [{"id": str(row[0]), "name": row[1], "stocks": row[2], "user_email": row[3]} for row in result]
 
-
+    def get_all_portfolios(self):
+        """Получает список всех портфелей пользователя"""
+        self._ensure_connection()
+        query = "SELECT id, name, stocks, user_email FROM portfolios"
+        result = self.client.query(query).result_rows
+        return [{"id": str(row[0]), "name": row[1], "stocks": row[2], "user_email": row[3]} for row in result]
 
     def update_portfolio(self, user_email: str, portfolio_id: str, name: str | None, stocks: List[str] | None):
         self._ensure_connection()
+    
+        # Проверяем, есть ли портфель у пользователя
+        query_check = "SELECT count() FROM portfolios WHERE id = %(id)s AND user_email = %(user_email)s"
+        existing = self.client.query(query_check, {"id": portfolio_id, "user_email": user_email}).result_rows[0][0]
         
-        query = "SELECT count() FROM portfolios WHERE id = %(id)s AND user_email = %(user_email)s"
-        existing = self.client.query(query, {"id": portfolio_id, "user_email": user_email}).result_rows[0][0]
         if existing == 0:
             raise Exception("Портфель не найден или не принадлежит пользователю")
     
-        updates = []
-        params = {"id": portfolio_id, "user_email": user_email}
+        # Удаляем старую запись
+        query_delete = "ALTER TABLE portfolios DELETE WHERE id = %(id)s AND user_email = %(user_email)s"
+        self.client.command(query_delete, {"id": portfolio_id, "user_email": user_email})
     
-        if name:
-            updates.append("name = %(name)s")
-            params["name"] = name
-        if stocks:
-            updates.append("stocks = %(stocks)s")
-            params["stocks"] = ",".join(stocks)
+        # Вставляем обновленные данные
+        query_insert = """
+        INSERT INTO portfolios (id, name, stocks, user_email) 
+        VALUES (%(id)s, %(name)s, %(stocks)s, %(user_email)s)
+        """
     
-        if updates:
-            update_query = f"ALTER TABLE portfolios UPDATE {', '.join(updates)} WHERE id = %(id)s AND user_email = %(user_email)s"
-            self.client.command(update_query, params)
+        params = {
+            "id": portfolio_id,
+            "user_email": user_email,
+            "name": name if name else "(SELECT name FROM portfolios WHERE id = %(id)s AND user_email = %(user_email)s)",
+            "stocks": stocks if stocks else "(SELECT stocks FROM portfolios WHERE id = %(id)s AND user_email = %(user_email)s)",
+        }
+    
+        self.client.command(query_insert, params)
+
+
+
+    def get_portfolio_by_id(self, user_email: str, portfolio_id: str):
+        """Получает один портфель по его ID"""
+        self._ensure_connection()
+
+        print(f"🔹 SQL-запрос: SELECT id, name, stocks FROM portfolios WHERE user_email = {user_email} AND id = {portfolio_id}")
+
+        query = "SELECT id, name, stocks FROM portfolios WHERE user_email = %(user_email)s AND id = %(portfolio_id)s"
+        result = self.client.query(query, {"user_email": user_email, "portfolio_id": portfolio_id}).result_rows
+
+        print(f"🔹 Результат запроса: {result}")
+
+        if result:
+            return {
+                "id": str(result[0][0]),
+                "name": result[0][1],
+                "stocks": result[0][2],
+                "user_email": user_email
+            }
+
+        return None
+
 
     def delete_portfolio(self, user_email: str, portfolio_id: str):
         self._ensure_connection()

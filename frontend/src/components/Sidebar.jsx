@@ -46,7 +46,7 @@ const Sidebar = () => {
 const SidebarContent = () => (
   <nav className="mt-4">
     <ul className="space-y-4">
-      <SidebarLink to="/portfolios" icon={<Briefcase size={20} />} text="Portfolio" />
+      <SidebarLink to="/all-portfolios" icon={<Briefcase size={20} />} text="Portfolios" />
       <li>
         <button
           onClick={() => (window.location.href = "https://ru.investing.com/news/stock-market-news")}
@@ -56,7 +56,7 @@ const SidebarContent = () => (
           News
         </button>
       </li>
-      <SidebarLink to="/settings" icon={<Settings size={20} />} text="Settings" />
+      {/* <SidebarLink to="/settings" icon={<Settings size={20} />} text="Settings" /> */}
     </ul>
   </nav>
 );

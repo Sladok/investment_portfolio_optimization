@@ -60,6 +60,13 @@ const AccountPage = () => {
           </div>
 
           <button
+            onClick={() => navigate(`/portfolios`)}
+            className="w-full bg-[#6D28D9] hover:bg-[#581C87] hover:shadow-md hover:scale-105 text-white font-medium py-2 px-4 rounded-lg transition-transform duration-200 ease-in-out mb-3"
+          >
+            Мои портфели
+          </button>
+
+          <button
             onClick={handleLogout}
             className="w-full bg-[#6D28D9] hover:bg-[#581C87] hover:shadow-md hover:scale-105 text-white font-medium py-2 px-4 rounded-lg transition-transform duration-200 ease-in-out mb-3"
           >

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { getPortfolios, deletePortfolio } from "../api/portfolio";
+import { getAllPortfolios, deletePortfolio } from "../api/portfolio";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import { Trash2, Edit3 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
-const PortfolioList = () => {
+const AllPortfolioList = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const PortfolioList = () => {
   useEffect(() => {
     const fetchPortfolios = async () => {
       try {
-        const data = await getPortfolios();
+        const data = await getAllPortfolios();
         if (Array.isArray(data)) {
           setPortfolios(data);
         } else {
@@ -35,10 +35,9 @@ const PortfolioList = () => {
 
   return (
     <div className="min-h-screen bg-[#0F0F19] text-white flex flex-col">
-      
       <Helmet>
-        <title>InvestNavigator - Список портфелей</title>
-        <meta name="description" content="Портфели" />
+        <title>InvestNavigator - Все портфели</title>
+        <meta name="description" content="Все портфели пользователей" />
       </Helmet>
 
       <Header />
@@ -50,7 +49,7 @@ const PortfolioList = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Мои портфели
+          Все портфели пользователей
         </motion.h2>
 
         {error && (
@@ -63,15 +62,6 @@ const PortfolioList = () => {
             Ошибка: {error}
           </motion.div>
         )}
-
-        <motion.button
-          onClick={() => navigate("/create-portfolio")}
-          className="w-full bg-[#8B5CF6] hover:bg-[#6D28D9] text-white p-3 rounded-lg font-semibold transition duration-300 mb-6"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          + Создать новый портфель
-        </motion.button>
 
         {portfolios.length === 0 ? (
           <p className="text-gray-400 text-center">Нет портфелей</p>
@@ -90,9 +80,10 @@ const PortfolioList = () => {
               >
                 <div>
                   <h3 className="text-xl font-bold text-[#D8B4FE] mb-2">{portfolio.name}</h3>
+                  <p className="text-gray-400 text-sm">Пользователь: {portfolio.user_email}</p>
                   <p className="text-gray-400 text-sm">Акции: {portfolio.stocks.join(", ")}</p>
                 </div>
-                <div className="flex justify-end gap-3 mt-4">
+                {/* <div className="flex justify-end gap-3 mt-4">
                   <motion.button
                     onClick={() => navigate(`/edit-portfolio/${portfolio.id}`)}
                     className="bg-[#8B5CF6] hover:bg-[#6D28D9] text-white p-2 rounded-lg flex items-center gap-2 transition"
@@ -109,7 +100,7 @@ const PortfolioList = () => {
                   >
                     <Trash2 size={18} /> Удалить
                   </motion.button>
-                </div>
+                </div> */}
               </motion.div>
             ))}
           </motion.div>
@@ -119,4 +110,4 @@ const PortfolioList = () => {
   );
 };
 
-export default PortfolioList;
+export default AllPortfolioList;

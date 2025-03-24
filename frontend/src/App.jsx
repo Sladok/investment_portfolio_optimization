@@ -6,8 +6,10 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import AccountPage from "./pages/AccountPage";
 import AdminPage from "./pages/AdminPage";
-import PortfolioList from "./pages/PortfolioList";
+import UserPortfolioList from "./pages/UserPortfolioList";
 import CreatePortfolio from "./pages/CreatePortfolio";
+import AllPortfolioList from "./pages/AllPortfolioList";
+import EditPortfolio from "./pages/EditPortfolio";
 
 function App() {
   return (
@@ -26,8 +28,10 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/admin" element={<AdminPage />} />
-          <Route path="/portfolios" element={<PortfolioList />} />
+          <Route path="/portfolios" element={<UserPortfolioList />} />
+          <Route path="/all-portfolios" element={<AllPortfolioList />} />
           <Route path="/create-portfolio" element={<CreatePortfolio />} />
+          <Route path="/edit-portfolio/:id" element={<EditPortfolio />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
