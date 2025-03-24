@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -29,7 +31,10 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/all-portfolios" element={<AllPortfolioList />} />
-          <Route path="/create-portfolio" element={<CreatePortfolio />} />
+          {/* <Route path="/create-portfolio" element={<CreatePortfolio />} /> */}
+          {/* <Route path="/create-portfolio" element={<CreatePortfolio setPortfolios={setPortfolios} />} /> */}
+          <Route path="/create-portfolio" element={<CreatePortfolio setPortfolios={setPortfolios} />} />
+
           <Route path="/portfolios" element={<UserPortfolioList portfolios={portfolios} setPortfolios={setPortfolios} />} />
           <Route path="/edit-portfolio/:id" element={<EditPortfolio setPortfolios={setPortfolios} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -40,6 +45,14 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
 
 
 // import React from "react";
