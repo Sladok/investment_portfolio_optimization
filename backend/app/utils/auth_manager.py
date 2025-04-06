@@ -37,10 +37,7 @@ class AuthManager:
     
     def get_current_user(self, token: str = Security(oauth2_scheme)):
         """Декодирует токен и возвращает email пользователя"""
-        print(f"Токен от клиента: {token}")  # Дебаг токена
         payload = self.decode_access_token(token)
-        print(f"Расшифрованный payload: {payload}")  # Проверка содержимого токена
-        # payload = self.decode_access_token(token)
         if not payload or "sub" not in payload:
             raise HTTPException(
                 status_code=401, detail="Не удалось проверить учетные данные"

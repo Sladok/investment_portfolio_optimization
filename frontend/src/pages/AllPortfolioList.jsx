@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { getAllPortfolios, deletePortfolio } from "../api/portfolio";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
-import { Trash2, Edit3 } from "lucide-react";
+// import { Trash2, Edit3 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 const AllPortfolioList = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPortfolios = async () => {
@@ -27,11 +26,6 @@ const AllPortfolioList = () => {
 
     fetchPortfolios();
   }, []);
-
-  const handleDelete = async (portfolioId) => {
-    await deletePortfolio(portfolioId);
-    setPortfolios(portfolios.filter((p) => p.id !== portfolioId));
-  };
 
   return (
     <div className="min-h-screen bg-[#0F0F19] text-white flex flex-col">
@@ -81,8 +75,15 @@ const AllPortfolioList = () => {
                 <div>
                   <h3 className="text-xl font-bold text-[#D8B4FE] mb-2">{portfolio.name}</h3>
                   <p className="text-gray-400 text-sm">Пользователь: {portfolio.user_email}</p>
-                  <p className="text-gray-400 text-sm">Акции: {portfolio.stocks.join(", ")}</p>
+                  <p className="text-gray-400 text-sm">Акции: {portfolio.stocks.map(s => s.ticker).join(", ")}</p>
+                  <p className="text-gray-500 text-xs mt-2">
+                    Создан: {new Date(portfolio.created_at).toLocaleString()}
+                  </p>
+                  <p className="text-gray-500 text-xs">
+                    Обновлён: {new Date(portfolio.updated_at).toLocaleString()}
+                  </p>
                 </div>
+
                 {/* <div className="flex justify-end gap-3 mt-4">
                   <motion.button
                     onClick={() => navigate(`/edit-portfolio/${portfolio.id}`)}

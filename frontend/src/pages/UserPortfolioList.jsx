@@ -93,9 +93,23 @@ const UserPortfolioList = ({ portfolios, setPortfolios }) => {
               >
                 <div>
                   <h3 className="text-xl font-bold text-[#D8B4FE] mb-2">{portfolio.name}</h3>
+                  {/* <p className="text-gray-400 text-sm">
+                  Акции: {Array.isArray(portfolio.stocks)
+                    ? portfolio.stocks.map((stock) => stock.ticker).join(", ")
+                    : "Нет акций"}
+                </p> */}
                   <p className="text-gray-400 text-sm">
-                  Акции: {Array.isArray(portfolio.stocks) ? portfolio.stocks.join(", ") : "Нет акций"}
-                </p>
+                    Акции: {Array.isArray(portfolio.stocks)
+                      ? portfolio.stocks.map((stock) => `${stock.ticker} (${stock.allocation}%)`).join(", ")
+                      : "Нет акций"}
+                  </p>
+                  <p className="text-gray-500 text-xs mt-2">
+                    Создан: {new Date(portfolio.created_at).toLocaleString()}
+                  </p>
+                  <p className="text-gray-500 text-xs">
+                    Обновлён: {new Date(portfolio.updated_at).toLocaleString()}
+                  </p>
+
                 </div>
                 <div className="flex justify-end gap-3 mt-4">
                   <motion.button
