@@ -75,7 +75,11 @@ const AllPortfolioList = () => {
                 <div>
                   <h3 className="text-xl font-bold text-[#D8B4FE] mb-2">{portfolio.name}</h3>
                   <p className="text-gray-400 text-sm">Пользователь: {portfolio.user_email}</p>
-                  <p className="text-gray-400 text-sm">Акции: {portfolio.stocks.map(s => s.ticker).join(", ")}</p>
+                  <p className="text-gray-400 text-sm">
+                    Акции: {Array.isArray(portfolio.stocks)
+                      ? portfolio.stocks.map((stock) => `${stock.ticker} (${stock.allocation}%)`).join(", ")
+                      : "Нет акций"}
+                  </p>
                   <p className="text-gray-500 text-xs mt-2">
                     Создан: {new Date(portfolio.created_at).toLocaleString()}
                   </p>
@@ -84,24 +88,6 @@ const AllPortfolioList = () => {
                   </p>
                 </div>
 
-                {/* <div className="flex justify-end gap-3 mt-4">
-                  <motion.button
-                    onClick={() => navigate(`/edit-portfolio/${portfolio.id}`)}
-                    className="bg-[#8B5CF6] hover:bg-[#6D28D9] text-white p-2 rounded-lg flex items-center gap-2 transition"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Edit3 size={18} /> Редактировать
-                  </motion.button>
-                  <motion.button
-                    onClick={() => handleDelete(portfolio.id)}
-                    className="bg-[#EF4444] hover:bg-[#DC2626] text-white p-2 rounded-lg flex items-center gap-2 transition"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Trash2 size={18} /> Удалить
-                  </motion.button>
-                </div> */}
               </motion.div>
             ))}
           </motion.div>
