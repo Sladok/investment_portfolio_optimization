@@ -67,7 +67,7 @@ const Dashboard = ({ defaultSymbol = "AAPL" }) => {
                 />
                 <button 
                     onClick={fetchData}
-                    className="px-4 py-2 bg-[#4C1D95] hover:bg-[#3B0D7B] text-white rounded-md hover:bg-purple-800 transition"
+                    className="px-4 py-2 bg-[#4C1D95] hover:bg-[#3B0D7B] active:scale-95 active:bg-[#2E0854] text-white rounded-md transition transform duration-150"
                 >
                     Найти
                 </button>

@@ -20,12 +20,9 @@ def get_table_data(table_name: str):
     try:
         print(f"Получаем данные из таблицы: {table_name}")  # Отладка
         data = db.client.query(f"SELECT * FROM {table_name} LIMIT 100").result_rows
-        print(f"Получено {len(data)} строк")  # Отладка
-        print(data)
 
         columns = db.client.query(f"DESCRIBE TABLE {table_name}").result_rows
         column_names = [col[0] for col in columns]
-        print(f"Колонки: {column_names}")  # Отладка
 
         def process_value(value):
             if isinstance(value, str): 

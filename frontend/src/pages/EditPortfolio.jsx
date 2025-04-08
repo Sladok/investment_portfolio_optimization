@@ -24,30 +24,63 @@ const EditPortfolio = ({ setPortfolios }) => {
     fetchPortfolio();
   }, [id]);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
+    const validStocks = stocks
+      .map((s) => ({
+        ticker: s.ticker.trim(),
+        allocation: parseFloat(s.allocation)
+      }))
+      .filter((s) => s.ticker && s.allocation > 0);
+  
+    const total = validStocks.reduce((sum, s) => sum + s.allocation, 0);
+    if (total !== 100) {
+      alert("Сумма процентов акций должна быть ровно 100");
+      return;
+    }
+  
     const updatedData = {
       name,
-      stocks: stocks.map(stock => ({
-        ticker: stock.ticker,
-        allocation: stock.allocation
-      }))
+      stocks: validStocks,
     };
-    
   
     const result = await updatePortfolio(id, updatedData);
   
     if (result) {
       setPortfolios((prevPortfolios) =>
-        prevPortfolios.map((p) =>
-          p.id === id ? { ...p, ...updatedData } : p
-        )
+        prevPortfolios.map((p) => (p.id === id ? { ...p, ...updatedData } : p))
       );
       navigate("/portfolios");
       navigate(0);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+    
+  //   const updatedData = {
+  //     name,
+  //     stocks: stocks.map(stock => ({
+  //       ticker: stock.ticker,
+  //       allocation: stock.allocation
+  //     }))
+  //   };
+    
+  
+  //   const result = await updatePortfolio(id, updatedData);
+  
+  //   if (result) {
+  //     setPortfolios((prevPortfolios) =>
+  //       prevPortfolios.map((p) =>
+  //         p.id === id ? { ...p, ...updatedData } : p
+  //       )
+  //     );
+  //     navigate("/portfolios");
+  //     navigate(0);
+  //   }
+  // };
   
 
   return (

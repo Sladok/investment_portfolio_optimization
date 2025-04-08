@@ -35,7 +35,7 @@ const CreatePortfolio = () => {
 
     const total = validStocks.reduce((sum, s) => sum + s.allocation, 0);
     if (total !== 100) {
-      alert("Сумма процентов акций должна быть ровно 100%");
+      alert("Сумма процентов акций должна быть ровно 100");
       return;
     }
 
