@@ -3,8 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import uvicorn
-from backend.app.routers import data, auth, portfolio
-
+from backend.app.routers import data, auth, portfolio, optimization
 from backend.app.routers.admin_clickhouse import router as admin_router
 
 
@@ -22,6 +21,7 @@ app.include_router(data.router)
 app.include_router(auth.router)
 app.include_router(admin_router)
 app.include_router(portfolio.router)
+app.include_router(optimization.router)
 
 @app.get("/")
 def root():

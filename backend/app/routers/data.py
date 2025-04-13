@@ -1,14 +1,16 @@
 from fastapi import APIRouter, HTTPException
 import os
 from dotenv import load_dotenv
-from tvDatafeed import Interval, TvDatafeedLive
+from tvDatafeed import Interval, TvDatafeedLive, TvDatafeed
 import pandas as pd
 from async_lru import alru_cache  
 
 load_dotenv()
 router = APIRouter()
 tvdatafeed_login, tvdatafeed_pass = os.getenv("tvdatafeed_login"), os.getenv("tvdatafeed_password") 
-tv = TvDatafeedLive(tvdatafeed_login, tvdatafeed_pass)
+# tv = TvDatafeedLive(tvdatafeed_login, tvdatafeed_pass)
+
+tv = TvDatafeed(tvdatafeed_login, tvdatafeed_pass)
 
 
 INTERVALS = {"in_1_minute": Interval.in_1_minute,
