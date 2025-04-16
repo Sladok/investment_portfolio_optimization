@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from tvDatafeed import Interval, TvDatafeedLive, TvDatafeed
 from async_lru import alru_cache  
-from backend.app.utils.tickers import get_exchange_for_symbol, get_all_tickers
+from backend.app.utils.tickers import get_exchange_for_symbol, get_all_tickers, get_all_tickers_with_names, search_tickers
 
 router = APIRouter()
 
@@ -41,6 +41,7 @@ async def get_stock_candlestick(symbol: str, n_bars: int = 100):
     """Получает исторические свечи акции"""
     try:
         exchange = get_exchange_for_symbol(ticker_dict=ticker_dict, symbol=symbol)
+        # print(symbol, exchange)
         data = tv.get_hist(symbol=symbol, exchange=exchange, interval=Interval.in_daily, n_bars=n_bars)
         if data is None or data.empty:
             raise HTTPException(status_code=404, detail="Нет данных по акции")
@@ -61,3 +62,22 @@ async def get_stock_candlestick(symbol: str, n_bars: int = 100):
     except Exception as e:
         print(f"Ошибка: {e}")
         raise HTTPException(status_code=500, detail="Ошибка получения данных")
+    
+
+@router.get("/tickers")
+async def get_all_tickers_endpoint():
+    """Возвращает список всех тикеров с названиями компаний"""
+    try:
+        return get_all_tickers_with_names()
+    except Exception as e:
+        print(f"Ошибка при получении тикеров: {e}")
+        raise HTTPException(status_code=500, detail="Не удалось загрузить тикеры")
+
+
+@router.get("/tickers/search")
+async def search_tickers_endpoint(query: str):
+    try:
+        return search_tickers(query)
+    except Exception as e:
+        print(f"Ошибка при поиске тикеров: {e}")
+        raise HTTPException(status_code=500, detail="Не удалось выполнить поиск")

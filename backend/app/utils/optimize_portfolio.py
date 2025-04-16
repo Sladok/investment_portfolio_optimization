@@ -15,11 +15,11 @@ def init_tvdatafeed(login: str = None, password: str = None):
     tv = TvDatafeed(username=login, password=password)
 
 
-def get_stock_data(ticker, exchange="NASDAQ", interval=Interval.in_daily, bars=10000):
+def get_stock_data(ticker, interval=Interval.in_daily, bars=10000):
     if tv is None:
         raise ValueError("tvDatafeed не инициализирован. Сначала вызови init_tvdatafeed().")
-    exchange = get_exchange_for_symbol(ticker_dict=ticker_dict, symbol=ticker)
-    df = tv.get_hist(ticker, exchange, interval=interval, n_bars=bars)
+    exch = get_exchange_for_symbol(ticker_dict=ticker_dict, symbol=ticker)
+    df = tv.get_hist(symbol=ticker, exchange=exch, interval=Interval.in_daily, n_bars=bars)
     if df is None or df.empty:
         raise ValueError(f"Нет данных для {ticker}")
     return df['close']

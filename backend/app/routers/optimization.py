@@ -11,13 +11,11 @@ from tvDatafeed import Interval
 from backend.app.utils.optimize_portfolio import get_stock_data, optimize_portfolio_utility, init_tvdatafeed
 from backend.app.models.portfolio import PortfolioOptimizationRequest
 
-
 load_dotenv()
 tvdatafeed_login, tvdatafeed_pass = os.getenv("tvdatafeed_login"), os.getenv("tvdatafeed_password") 
 init_tvdatafeed(tvdatafeed_login, tvdatafeed_pass)
 
 router = APIRouter()
-
 
 
 @router.post("/optimize/full")
@@ -29,10 +27,11 @@ async def optimize_full_portfolio(req: PortfolioOptimizationRequest):
         to_date = pd.to_datetime(req.to_date or datetime.today().date())
         from_date = pd.to_datetime(req.from_date or (to_date - timedelta(days=365)))
 
+
         # Сбор цен
         prices = {}
         for ticker in req.tickers:
-            series = get_stock_data(ticker, req.exchange, Interval.in_daily, bars=10000)
+            series = get_stock_data(ticker, Interval.in_daily, bars=10000)
             prices[ticker] = series
         df = pd.DataFrame(prices)
         df = df.dropna()
