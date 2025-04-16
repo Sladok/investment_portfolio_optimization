@@ -258,11 +258,3 @@ const EditPortfolio = ({ setPortfolios }) => {
 };
 
 export default EditPortfolio;
-
-
-
-
-
-
-
-

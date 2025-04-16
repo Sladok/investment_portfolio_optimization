@@ -18,7 +18,7 @@ def get_tables():
 @router.get("/table/{table_name}")
 def get_table_data(table_name: str):
     try:
-        print(f"Получаем данные из таблицы: {table_name}")  # Отладка
+        # print(f"Получаем данные из таблицы: {table_name}")  # Отладка
         data = db.client.query(f"SELECT * FROM {table_name} LIMIT 100").result_rows
 
         columns = db.client.query(f"DESCRIBE TABLE {table_name}").result_rows

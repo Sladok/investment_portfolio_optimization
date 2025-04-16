@@ -17,12 +17,14 @@ def create_portfolio(data: PortfolioCreate, user_email: str = Depends(get_curren
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @router.get("/portfolios/", response_model=List[PortfolioResponse])
 def get_user_portfolios(user_email: str = Depends(get_current_user)):
     try:
         return db.get_user_portfolios(user_email)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.get("/portfolios/{portfolio_id}/", response_model=PortfolioResponse)
 def get_portfolio(portfolio_id: str, user_email: str = Depends(get_current_user)):
@@ -33,6 +35,7 @@ def get_portfolio(portfolio_id: str, user_email: str = Depends(get_current_user)
         raise HTTPException(status_code=404, detail="Портфель не найден")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.put("/portfolios/{portfolio_id}/", response_model=dict)
 def update_portfolio(portfolio_id: str, data: PortfolioUpdate, user_email: str = Depends(get_current_user)):
@@ -50,6 +53,7 @@ def delete_portfolio(portfolio_id: str, user_email: str = Depends(get_current_us
         return {"message": "Портфель удалён"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
     
 @router.get("/all-portfolios/", response_model=List[PortfolioResponse])
 def get_all_portfolios():

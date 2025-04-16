@@ -217,7 +217,7 @@ class ClickHouseDB:
             FROM portfolios
         """
         portfolios = self.client.query(portfolios_query).result_rows
-        print(portfolios)
+        # print(portfolios)
         result = []
         for portfolio in portfolios:
             portfolio_id, user_email, name, created_at, updated_at = portfolio
