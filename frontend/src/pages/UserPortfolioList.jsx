@@ -87,49 +87,26 @@ const UserPortfolioList = ({ portfolios, setPortfolios }) => {
           >
             {portfolios.map((portfolio) => (
               <motion.div
-                key={portfolio.id}
-                className="w-full bg-gradient-to-r from-[#1E1E30] to-[#2A2A40] p-12 rounded-xl shadow-lg flex flex-col justify-between transition transform hover:scale-105"
-                whileHover={{ scale: 1.03 }}
-              >
-                <div>
-                  <h3 className="text-xl font-bold text-[#D8B4FE] mb-2">{portfolio.name}</h3>
-                  {/* <p className="text-gray-400 text-sm">
+              key={portfolio.id}
+              onClick={() => navigate(`/edit-portfolio/${portfolio.id}`)}
+              className="cursor-pointer w-full bg-gradient-to-r from-[#1E1E30] to-[#2A2A40] p-12 rounded-xl shadow-lg flex flex-col justify-between transition transform hover:scale-105"
+              whileHover={{ scale: 1.03 }}
+            >
+              <div>
+                <h3 className="text-xl font-bold text-[#D8B4FE] mb-2">{portfolio.name}</h3>
+                <p className="text-gray-400 text-sm">
                   Акции: {Array.isArray(portfolio.stocks)
-                    ? portfolio.stocks.map((stock) => stock.ticker).join(", ")
+                    ? portfolio.stocks.map((stock) => `${stock.ticker} (${stock.allocation}%)`).join(", ")
                     : "Нет акций"}
-                </p> */}
-                  <p className="text-gray-400 text-sm">
-                    Акции: {Array.isArray(portfolio.stocks)
-                      ? portfolio.stocks.map((stock) => `${stock.ticker} (${stock.allocation}%)`).join(", ")
-                      : "Нет акций"}
-                  </p>
-                  <p className="text-gray-500 text-xs mt-2">
-                    Создан: {new Date(portfolio.created_at).toLocaleString()}
-                  </p>
-                  <p className="text-gray-500 text-xs">
-                    Обновлён: {new Date(portfolio.updated_at).toLocaleString()}
-                  </p>
-
-                </div>
-                <div className="flex justify-end gap-3 mt-4">
-                  <motion.button
-                    onClick={() => navigate(`/edit-portfolio/${portfolio.id}`)}
-                    className="bg-[#8B5CF6] hover:bg-[#6D28D9] text-white p-2 rounded-lg flex items-center gap-2 transition"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Edit3 size={18} /> Редактировать
-                  </motion.button>
-                  <motion.button
-                    onClick={() => handleDelete(portfolio.id)}
-                    className="bg-[#EF4444] hover:bg-[#DC2626] text-white p-2 rounded-lg flex items-center gap-2 transition"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Trash2 size={18} /> Удалить
-                  </motion.button>
-                </div>
-              </motion.div>
+                </p>
+                <p className="text-gray-500 text-xs mt-2">
+                  Создан: {new Date(portfolio.created_at).toLocaleString()}
+                </p>
+                <p className="text-gray-500 text-xs">
+                  Обновлён: {new Date(portfolio.updated_at).toLocaleString()}
+                </p>
+              </div>
+            </motion.div>
             ))}
           </motion.div>
         )}
