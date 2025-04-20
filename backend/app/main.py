@@ -1,11 +1,8 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import List
 import uvicorn
 from backend.app.routers import data, auth, portfolio, optimization
 from backend.app.routers.admin_clickhouse import router as admin_router
-
 
 app = FastAPI()
 

@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllPortfolios, deletePortfolio } from "../api/portfolio";
-// import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
-// import { Trash2, Edit3 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 const AllPortfolioList = () => {

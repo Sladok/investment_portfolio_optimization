@@ -6,7 +6,7 @@ from datetime import datetime
 
 class Stock(BaseModel):
     ticker: str
-    allocation: float = Field(..., ge=0, le=100)  # Процент от 0 до 100
+    allocation: float = Field(..., ge=0, le=100)
 
 
 class PortfolioCreate(BaseModel):

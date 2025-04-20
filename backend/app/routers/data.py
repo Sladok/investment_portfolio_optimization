@@ -14,7 +14,7 @@ tv = TvDatafeed(tvdatafeed_login, tvdatafeed_pass)
 ticker_dict = get_all_tickers()
 
 
-@alru_cache(ttl=60)  # Кешируем на 60 секунд
+@alru_cache(ttl=60)
 async def fetch_stock_data(symbol: str, exchange: str = "NASDAQ"):
     """Асинхронное получение актуальной цены акции"""
     try:
@@ -41,7 +41,6 @@ async def get_stock_candlestick(symbol: str, n_bars: int = 100):
     """Получает исторические свечи акции"""
     try:
         exchange = get_exchange_for_symbol(ticker_dict=ticker_dict, symbol=symbol)
-        # print(symbol, exchange)
         data = tv.get_hist(symbol=symbol, exchange=exchange, interval=Interval.in_daily, n_bars=n_bars)
         if data is None or data.empty:
             raise HTTPException(status_code=404, detail="Нет данных по акции")

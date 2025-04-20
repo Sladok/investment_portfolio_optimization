@@ -81,7 +81,6 @@ class ClickHouseDB:
         ''', {"id": portfolio_id, "user_email": user_email, "name": name})
     
         for stock in stocks:
-            # Используем доступ через атрибуты, т.к. stock — это объект модели Stock.
             self.client.command('''
                 INSERT INTO portfolio_stocks (portfolio_id, ticker, allocation)
                 VALUES (%(portfolio_id)s, %(ticker)s, %(allocation)s)
@@ -100,14 +99,11 @@ class ClickHouseDB:
         for row in result:
             portfolio_id, name, created_at, updated_at = row
 
-            # Получаем акции для каждого портфеля
             stocks_query = "SELECT ticker, allocation FROM portfolio_stocks WHERE portfolio_id = %(id)s"
             stocks_result = self.client.query(stocks_query, {"id": portfolio_id}).result_rows
 
-            # Формируем список акций для портфеля
             stocks = [{"ticker": stock[0], "allocation": stock[1]} for stock in stocks_result]
 
-            # Добавляем user_email и даты в ответ
             portfolios.append({
                 "id": portfolio_id,
                 "name": name,
@@ -159,7 +155,6 @@ class ClickHouseDB:
     def update_portfolio(self, user_email: str, portfolio_id: str, name: str | None, stocks: List[str] | None):
         self._ensure_connection()
 
-        # Проверяем, есть ли портфель у пользователя и получаем текущий created_at
         query_check = """
             SELECT count(), max(created_at)
             FROM portfolios
@@ -169,14 +164,12 @@ class ClickHouseDB:
         if count == 0:
             raise Exception("Портфель не найден или не принадлежит пользователю")
 
-        # Удаляем старую запись (если имя меняется)
         if name:
             query_delete_name = """
             ALTER TABLE portfolios DELETE WHERE id = %(id)s AND user_email = %(user_email)s
             """
             self.client.command(query_delete_name, {"id": portfolio_id, "user_email": user_email})
 
-            # Вставляем новую запись с сохранением created_at
             query_insert_name = """
             INSERT INTO portfolios (id, name, user_email, created_at, updated_at)
             VALUES (%(id)s, %(name)s, %(user_email)s, %(created_at)s, now())
@@ -188,7 +181,6 @@ class ClickHouseDB:
                 "created_at": created_at
             })
 
-        # Обновляем акции
         query_delete_stocks = "ALTER TABLE portfolio_stocks DELETE WHERE portfolio_id = %(id)s"
         self.client.command(query_delete_stocks, {"id": portfolio_id})
 
@@ -211,22 +203,18 @@ class ClickHouseDB:
         """Получает список всех портфелей пользователя"""
         self._ensure_connection()
 
-        # Получаем все портфели с датами
         portfolios_query = """
             SELECT id, user_email, name, created_at, updated_at 
             FROM portfolios
         """
         portfolios = self.client.query(portfolios_query).result_rows
-        # print(portfolios)
         result = []
         for portfolio in portfolios:
             portfolio_id, user_email, name, created_at, updated_at = portfolio
 
-            # Получаем акции для текущего портфеля
             stocks_query = "SELECT ticker, allocation FROM portfolio_stocks WHERE portfolio_id = %(portfolio_id)s"
             stocks = self.client.query(stocks_query, {"portfolio_id": portfolio_id}).result_rows
 
-            # Формируем словарь портфеля
             result.append({
                 "id": portfolio_id,
                 "user_email": user_email,
