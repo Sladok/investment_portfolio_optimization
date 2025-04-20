@@ -1,5 +1,3 @@
-
-
 const API_URL = "http://localhost:8000";
 import axios from "axios";
 
@@ -11,7 +9,7 @@ const getAuthHeaders = () => {
 
 export const getPortfolios = async () => {
   try {
-    const response = await fetch(`${API_URL}/portfolios/`, {   // тута ошибка
+    const response = await fetch(`${API_URL}/portfolios/`, { 
       headers: getAuthHeaders(),
     });
 
@@ -109,7 +107,7 @@ export const updatePortfolio = async (id, updatedData) => {
     const response = await fetch(`http://localhost:8000/portfolios/${id}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",  // Обязательно указываем заголовок Content-Type
+        "Content-Type": "application/json",
         ...getAuthHeaders(),
       },
       body: JSON.stringify(updatedData),
@@ -120,7 +118,7 @@ export const updatePortfolio = async (id, updatedData) => {
     }
 
     const result = await response.json();
-    return result;  // Вернуть обновленные данные портфеля
+    return result;
   } catch (error) {
     console.error("Ошибка при обновлении портфеля:", error);
     return null;

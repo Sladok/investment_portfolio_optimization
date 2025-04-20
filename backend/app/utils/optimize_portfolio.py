@@ -28,6 +28,7 @@ def get_stock_data(ticker, interval=Interval.in_daily, bars=10000):
 def optimize_portfolio_utility(returns: pd.DataFrame, risk_aversion: float = 3.0):
     mu = returns.mean() * 252
     cov = returns.cov() * 252
+    correlation_matrix = returns.corr()  # Матрица корреляции между активами
     n = len(mu)
 
     def utility(w):
@@ -45,5 +46,6 @@ def optimize_portfolio_utility(returns: pd.DataFrame, risk_aversion: float = 3.0
         'weights': dict(zip(returns.columns, result.x)),
         'expected_return': mu @ result.x,
         'expected_volatility': np.sqrt(result.x.T @ cov @ result.x),
-        'quadratic_utility': mu @ result.x - (risk_aversion / 2) * result.x.T @ cov @ result.x
+        'quadratic_utility': mu @ result.x - (risk_aversion / 2) * result.x.T @ cov @ result.x,
+        'correlation_matrix': correlation_matrix  # Возвращаем матрицу корреляции
     }

@@ -1,4 +1,3 @@
-// store/store.js
 import { configureStore } from "@reduxjs/toolkit";
 import portfolioReducer from "../features/portfolio/portfolioSlice";
 import dashboardReducer from "../features/charts/dashboardSlice";

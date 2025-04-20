@@ -64,7 +64,8 @@ async def optimize_full_portfolio(req: PortfolioOptimizationRequest):
                 "dates": orig_cum.index.strftime("%Y-%m-%d").tolist(),
                 "original_cum": orig_cum.tolist(),
                 "optimized_cum": opt_cum.tolist()
-            }
+            },
+            "correlation_matrix": opt_result['correlation_matrix'].to_dict() 
         }
 
         return response
@@ -72,3 +73,6 @@ async def optimize_full_portfolio(req: PortfolioOptimizationRequest):
     except Exception as e:
         logging.error(f"Ошибка в полной оптимизации: {e}")
         raise HTTPException(status_code=500, detail="Ошибка в процессе оптимизации портфеля")
+    
+# @router.post("/optimize/correlation")
+# async def optimize_full_portfolio(req: PortfolioOptimizationRequest):
